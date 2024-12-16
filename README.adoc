@@ -1,0 +1,186 @@
+:linkcss:
+:stylesdir: css
+:stylesheet: mystyle.css
+:twoinches: width='360'
+:full-width: width='100%'
+:three-quarters-width: width='75%'
+:two-thirds-width: width='66%'
+:half-width: width='50%'
+:half-size:
+:one-thirds-width: width='33%'
+:one-quarters-width: width='25%'
+:thumbnail: width='60'
+:imagesdir: images
+:sourcesdir: codes
+:icons: font
+:hide-uri-scheme!:
+:figure-caption: 図
+:example-caption: リスト
+:table-caption: 表
+:appendix-caption: 付録
+:xrefstyle: short
+:section-refsig:
+:chapter-refsig:
+
+:toc:
+
+= lox10
+
+コンパイラ、第9,10回の講義用Assignmentです。
+
+== Lox文法の階層化 -- 6.1
+
+演算の優先度（precedence）:: どの演算子を先に評価するかを決める。
+演算の結合度（assoiativity）:: 同じ優先度の演算子を並べたときに、どの演算子を優先するかを決める。
+
+
+Loxでは、Cと同様の優先順位を採用する。
+
+=== 文法の階層化
+
+Cと同様の優先順位を採用するために、文法を階層化する。
+
+
+.文法の階層化（下に行くほど優先度が高い）
+[source]
+----
+espression  ::= ...  /* 式の規則 */
+equality    ::= ...  /* 等価の規則 */
+comparison  ::= ...  /* 比較の規則 */
+term        ::= ...  /* 項の規則 */
+factor      ::= ...  /* 因子の規則 */
+unary       ::= ...  /* 単項式の規則 */
+primary     ::= ...  /* 一次式の規則 */
+----
+
+== 最終的なLoxの式の文法
+
+. テキストの 6.1 を読み、 `codes` ディレクトリの `lox_expr.bnf` を編集して、最終的なLoxの式の文法を書きなさい。
+** 日本語のテキストには邦訳も併記されているが、書くのは「 -- 上記の対訳です -- 」の上まででよい。
+** 「lox09」で使った記法を使う。
+** TABコードは使わず、スペースを使う。
+** スペースも含め、すべて半角文字を使う。
+. 保存して更新すれば、下記が更新される。
+
+[source]
+.lox_expr.bnf（最終的なLoxの式の文法）
+----
+include::{sourcesdir}/lox_expr.bnf[]
+----
+
+. 作成できたら、このリポジトリをコミットしなさい。
+** まずは、 status を確認する。
+** コミットメッセージは「lox_expr.bnf」でよいでしょう。
+** 忘れそうなら、プッシュしておいてもよい。
+
+[NOTE]
+--
+Chromeブラウザで、Asciidoctor.js機能拡張を入れてあれば、プレビューで上記に `breakfast01.bnf` が表示される。
+--
+
+
+== Parserクラスの作成 -- 6.2
+
+
+[NOTE]
+--
+スキャナーの入力は文字の並びで、出力はトークンの並びであった。
+
+パーサーの入力はトークンの並びで、出力はトークンの並びが最後までチェックできたかどうかの判定。
+--
+
+=== 演習：Parserを作成する
+
+テキストの6.2を読み、「lox01」の  `codes` ディレクトリのコードを編集しなさい。
+
+. `lox` ディレクトリに、 `Parser.java` を作成する。
+** `Parser` クラスを定義する。
+** `expression` メソッドを追加する。
+** `equality` メソッドを追加する。
+** `match` メソッドを追加する。
+** `check` メソッドを追加する。
+** `advance` メソッドを追加する。
+** `isAtEnd` 、 `peek` 、 `previous` メソッドを追加する。
+. 引き続き追加していく。
+** `comparison` メソッドを追加する。
+** `term` メソッドを追加する。
+** `factor` メソッドを追加する。
+** `unary` メソッドを追加する。
+** `primary` メソッドを追加する。
+
+
+作成できたら、一度「lox01」をコミットしなさい。
+
+* まずは、 status を確認する。
+* コミットメッセージは「add Parser.java」でよいでしょう。
+* 忘れそうなら、プッシュしておいてもよい。
+
+
+== 構文エラー -- 6.3
+
+テキストの6.3を読んで、構文エラーの種類、必要な対策を確認しなさい。
+また、優れたパーサーの特長を確認しなさい。
+
+=== 演習：パニックモードの対応 -- 6.3.2
+
+テキストの6.3を読み、「lox01」の  `codes` ディレクトリのコードを編集しなさい。
+
+. `lox` ディレクトリの `Parser.java` を開く。
+** `consume` メソッドを追加する。
+** `error` メソッドを追加する。
+** `error` メソッドを追加する。
+. `lox` ディレクトリの `Lox.java` を開く。
+** `error` メソッドを追加する。
+. `lox` ディレクトリの `Parser.java` を開く。
+** `Parser` クラスの冒頭に、ネストクラスとして `ParserError` クラスを追加する。
+
+作成できたら、一度「lox01」をコミットしなさい。
+
+* まずは、 status を確認する。
+* コミットメッセージは「modify Parser.java」でよいでしょう。
+* 忘れそうなら、プッシュしておいてもよい。
+
+
+=== 演習：Parserを完成させる -- 6.3.3, 6.4
+
+テキストの6.3.3、6.4を読み、「lox01」の  `codes` ディレクトリのコードを編集しなさい。
+
+. `lox` ディレクトリの `Parser.java` を開く。
+** `synchronize` メソッドを追加する。
+** `primary` メソッドの末尾に、エラー捕捉用のコードを追加する。
+** `parse` メソッドを追加する。
+. `lox` ディレクトリの `Lox.java` を開く。
+** `run` メソッドを修正して、パーサーのインスタンスを作成して、パーサーを起動するコードを追加する。
+
+作成できたら、コンパイルしなしさい。
+
+[souece,console]
+----
+javac com/craftinginterpreters/lox/Lox.java
+----
+
+コンパイルできたら、実行しなさい。
+
+[souece,console]
+----
+java com.craftinginterpreters.lox.Lox <プログラム>
+----
+
+=== 演習：Parserの動作を確認する
+
+. このファイル（README.adoc）を編集して、動作させた例と、結果を下記に書き込みなさい。
+
+[source,console]
+----
+ここに、Loxを実行したときのコマンドライン、その動作結果をテキストで貼り付ける。
+----
+
+作成できたら、一度「lox01」をコミットしなさい。
+
+* まずは、 status を確認する。
+* コミットメッセージは「Parser completed」でよいでしょう。
+
+[IMPORTANT]
+--
+ここまでの演習結果について、「lox01」「lox10」ともにコミットとプッシュを確認しておく。
+--
