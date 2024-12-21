@@ -173,7 +173,8 @@ java com.craftinginterpreters.lox.Lox <プログラム>
 
 [source,console]
 ----
-ここに、Loxを実行したときのコマンドライン、その動作結果をテキストで貼り付ける。
+C:\Users\yuu82\craftinginterpreters\java\lox01-yuuya22059\codes>java com.craftinginterpreters.lox.Lox com/craftinginterpreters/lox/fib.lox
+[line 3] Error at 'fun': Expect expression.
 ----
 
 作成できたら、一度「lox01」をコミットしなさい。
